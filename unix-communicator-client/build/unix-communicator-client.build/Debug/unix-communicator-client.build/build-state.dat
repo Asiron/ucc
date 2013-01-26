@@ -1,0 +1,84 @@
+Tunix-communicator-client
+v5
+r1
+cCheck dependencies
+cCompileC build/unix-communicator-client.build/Debug/unix-communicator-client.build/Objects-normal/x86_64/main.o /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/src/main.c normal x86_64 c com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/Debug/unix-communicator-client normal x86_64
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000503F1B7700000000000000AA
+t1346313079
+s170
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/include/ncurses.h
+c000000005094C03D0000000000013892
+t1351925821
+s80018
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/include/stdio.h
+c000000005094C03D0000000000004523
+t1351925821
+s17699
+
+N/Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/Debug/unix-communicator-client
+t1359207163
+s9096
+
+N/Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/unix-communicator-client.build/Debug/unix-communicator-client.build/Objects-normal/x86_64/main.o
+t1359207163
+s2900
+
+N/Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/unix-communicator-client.build/Debug/unix-communicator-client.build/Objects-normal/x86_64/unix-communicator-client.LinkFileList
+c000000005103D9B800000000000000B4
+t1359206840
+s180
+
+N/Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/src/main.c
+c000000005103DAFB0000000000000123
+t1359207163
+s291
+i<stdio.h>
+i<ncurses.h>
+
+N/Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/unix-communicator-client/main.c
+c000000005103D75F0000000000000120
+t1359206239
+s288
+i<stdio.h>
+
+CBuild AST from /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/src/main.c
+r0
+
+CBuild AST from /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/unix-communicator-client/main.c
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciescb82f97f12b4b641^4fcdf97f12b4b641^---0#1#0#--18"Check dependencies36"2D8E0971-EFEC-4285-B5B8-6FEB3219A864-
+
+CCompileC build/unix-communicator-client.build/Debug/unix-communicator-client.build/Objects-normal/x86_64/main.o /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/src/main.c normal x86_64 c com.apple.compilers.llvm.clang.1_0.compiler
+s380899963.651757
+e380899963.698591
+r1
+xCompileC
+xbuild/unix-communicator-client.build/Debug/unix-communicator-client.build/Objects-normal/x86_64/main.o
+x/Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/src/main.c
+xnormal
+xx86_64
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection95"Compile /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/src/main.c4f02a77b12b4b641^50dfb27b12b4b641^---0#0#0#-19%DVTDocumentLocation2@103"file://localhost/Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/src/main.c0000000000000000^3369"CompileC build/unix-communicator-client.build/Debug/unix-communicator-client.build/Objects-normal/x86_64/main.o src/main.c normal x86_64 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch x86_64 -fmessage-length=0 -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wshorten-64-to-32 -Wpointer-sign -Wno-newline-eof -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -Wno-sign-conversion -iquote /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/unix-communicator-client.build/Debug/unix-communicator-client.build/unix-communicator-client-generated-files.hmap -I/Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/unix-communicator-client.build/Debug/unix-communicator-client.build/unix-communicator-client-own-target-headers.hmap -I/Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/unix-communicator-client.build/Debug/unix-communicator-client.build/unix-communicator-client-all-target-headers.hmap -iquote /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/unix-communicator-client.build/Debug/unix-communicator-client.build/unix-communicator-client-project-headers.hmap -I/Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/unix-communicator-client.build/Debug/unix-communicator-client.build/DerivedSources/x86_64 -I/Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/unix-communicator-client.build/Debug/unix-communicator-client.build/DerivedSources -F/Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/Debug -MMD -MT dependencies -MF /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/unix-communicator-client.build/Debug/unix-communicator-client.build/Objects-normal/x86_64/main.d --serialize-diagnostics /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/unix-communicator-client.build/Debug/unix-communicator-client.build/Objects-normal/x86_64/main.dia -c /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/src/main.c -o /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/unix-communicator-client.build/Debug/unix-communicator-client.build/Objects-normal/x86_64/main.o36"9FEA4ADF-6896-4273-8601-AF6BC5FE3F2B-
+
+CCompileC build/unix-communicator-client.build/Debug/unix-communicator-client.build/Objects-normal/x86_64/main.o /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/unix-communicator-client/main.c normal x86_64 c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CLd /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/Debug/unix-communicator-client normal x86_64
+s380899963.704971
+e380899963.731502
+r1
+xLd
+x/Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/Debug/unix-communicator-client
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection118"Link /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/Debug/unix-communicator-clientf698b47b12b4b641^ba4abb7b12b4b641^---0#0#0#--954"Ld build/Debug/unix-communicator-client normal x86_64    cd /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/Debug -F/Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/Debug -filelist /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/unix-communicator-client.build/Debug/unix-communicator-client.build/Objects-normal/x86_64/unix-communicator-client.LinkFileList -mmacosx-version-min=10.8 -lncurses -o /Users/asiron/Dropbox/Studies/SOP2/SOP2-project/ucc/unix-communicator-client/build/Debug/unix-communicator-client36"BCC46937-F9EA-4594-B1E3-C583A5AAC6D3-
+

@@ -1,0 +1,225 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		10F1680016B40EDF00C110F0 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 10F167FF16B40EDF00C110F0 /* main.c */; };
+		10F1680216B40EDF00C110F0 /* unix_communicator_client.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 10F1680116B40EDF00C110F0 /* unix_communicator_client.1 */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		10F167F916B40EDF00C110F0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				10F1680216B40EDF00C110F0 /* unix_communicator_client.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		10F167FB16B40EDF00C110F0 /* unix-communicator-client */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "unix-communicator-client"; sourceTree = BUILT_PRODUCTS_DIR; };
+		10F167FF16B40EDF00C110F0 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		10F1680116B40EDF00C110F0 /* unix_communicator_client.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = unix_communicator_client.1; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		10F167F816B40EDF00C110F0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		10F167F016B40EDF00C110F0 = {
+			isa = PBXGroup;
+			children = (
+				10F1680916B410C200C110F0 /* headers */,
+				10F167FE16B40EDF00C110F0 /* src */,
+				10F167FC16B40EDF00C110F0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		10F167FC16B40EDF00C110F0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				10F167FB16B40EDF00C110F0 /* unix-communicator-client */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		10F167FE16B40EDF00C110F0 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				10F167FF16B40EDF00C110F0 /* main.c */,
+				10F1680116B40EDF00C110F0 /* unix_communicator_client.1 */,
+			);
+			path = src;
+			sourceTree = SOURCE_ROOT;
+		};
+		10F1680916B410C200C110F0 /* headers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = headers;
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		10F167FA16B40EDF00C110F0 /* unix-communicator-client */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 10F1680516B40EDF00C110F0 /* Build configuration list for PBXNativeTarget "unix-communicator-client" */;
+			buildPhases = (
+				10F167F716B40EDF00C110F0 /* Sources */,
+				10F167F816B40EDF00C110F0 /* Frameworks */,
+				10F167F916B40EDF00C110F0 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "unix-communicator-client";
+			productName = "unix-communicator-client";
+			productReference = 10F167FB16B40EDF00C110F0 /* unix-communicator-client */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		10F167F216B40EDF00C110F0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = "Maciej Żurad";
+			};
+			buildConfigurationList = 10F167F516B40EDF00C110F0 /* Build configuration list for PBXProject "unix-communicator-client" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 10F167F016B40EDF00C110F0;
+			productRefGroup = 10F167FC16B40EDF00C110F0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				10F167FA16B40EDF00C110F0 /* unix-communicator-client */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		10F167F716B40EDF00C110F0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				10F1680016B40EDF00C110F0 /* main.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		10F1680316B40EDF00C110F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		10F1680416B40EDF00C110F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		10F1680616B40EDF00C110F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"OTHER_LDFLAGS[arch=*]" = "-lncurses";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		10F1680716B40EDF00C110F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"OTHER_LDFLAGS[arch=*]" = "-lncurses";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		10F167F516B40EDF00C110F0 /* Build configuration list for PBXProject "unix-communicator-client" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				10F1680316B40EDF00C110F0 /* Debug */,
+				10F1680416B40EDF00C110F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		10F1680516B40EDF00C110F0 /* Build configuration list for PBXNativeTarget "unix-communicator-client" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				10F1680616B40EDF00C110F0 /* Debug */,
+				10F1680716B40EDF00C110F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 10F167F216B40EDF00C110F0 /* Project object */;
+}
