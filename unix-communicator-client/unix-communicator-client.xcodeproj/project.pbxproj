@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		10F1680016B40EDF00C110F0 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 10F167FF16B40EDF00C110F0 /* main.c */; };
-		10F1680216B40EDF00C110F0 /* unix_communicator_client.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 10F1680116B40EDF00C110F0 /* unix_communicator_client.1 */; };
+		10F1680016B40EDF00C110F0 /* client.c in Sources */ = {isa = PBXBuildFile; fileRef = 10F167FF16B40EDF00C110F0 /* client.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,16 +17,16 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				10F1680216B40EDF00C110F0 /* unix_communicator_client.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		10B704B116DFC93B001211CF /* protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = protocol.h; sourceTree = SOURCE_ROOT; };
+		10D7219916E37388000AB2C2 /* client.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = client.h; sourceTree = SOURCE_ROOT; };
 		10F167FB16B40EDF00C110F0 /* unix-communicator-client */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "unix-communicator-client"; sourceTree = BUILT_PRODUCTS_DIR; };
-		10F167FF16B40EDF00C110F0 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		10F1680116B40EDF00C110F0 /* unix_communicator_client.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = unix_communicator_client.1; sourceTree = "<group>"; };
+		10F167FF16B40EDF00C110F0 /* client.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = client.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,8 +60,7 @@
 		10F167FE16B40EDF00C110F0 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				10F167FF16B40EDF00C110F0 /* main.c */,
-				10F1680116B40EDF00C110F0 /* unix_communicator_client.1 */,
+				10F167FF16B40EDF00C110F0 /* client.c */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -70,6 +68,8 @@
 		10F1680916B410C200C110F0 /* headers */ = {
 			isa = PBXGroup;
 			children = (
+				10B704B116DFC93B001211CF /* protocol.h */,
+				10D7219916E37388000AB2C2 /* client.h */,
 			);
 			path = headers;
 			sourceTree = SOURCE_ROOT;
@@ -84,6 +84,7 @@
 				10F167F716B40EDF00C110F0 /* Sources */,
 				10F167F816B40EDF00C110F0 /* Frameworks */,
 				10F167F916B40EDF00C110F0 /* CopyFiles */,
+				10F1682916B4801800C110F0 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -120,12 +121,28 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		10F1682916B4801800C110F0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "    ";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		10F167F716B40EDF00C110F0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				10F1680016B40EDF00C110F0 /* main.c in Sources */,
+				10F1680016B40EDF00C110F0 /* client.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,7 +203,8 @@
 		10F1680616B40EDF00C110F0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"OTHER_LDFLAGS[arch=*]" = "-lncurses";
+				GCC_C_LANGUAGE_STANDARD = ansi;
+				New_Setting = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -194,7 +212,8 @@
 		10F1680716B40EDF00C110F0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"OTHER_LDFLAGS[arch=*]" = "-lncurses";
+				GCC_C_LANGUAGE_STANDARD = ansi;
+				New_Setting = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -218,6 +237,7 @@
 				10F1680716B40EDF00C110F0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
