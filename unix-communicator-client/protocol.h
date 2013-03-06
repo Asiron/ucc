@@ -6,6 +6,21 @@
 //  Copyright (c) 2013 Maciej Żurad. All rights reserved.
 //
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/ipc.h>
+#include <fcntl.h>
+#include <stdarg.h>
+#include <sys/sem.h>
+#include <sys/shm.h>
+#include <sys/msg.h>
+#include <time.h>
+#include <signal.h>
+#include <errno.h>
+#include <pthread.h>
+
 #ifndef unix_communicator_client_protocol_h
 #define unix_communicator_client_protocol_h
 
@@ -13,6 +28,8 @@
 #define USER_NAME_MAX_LENGTH 10
 
 #define RESPONSE_LENGTH 50
+
+#define REPO_SIZE MAX_SERVERS_NUMBER*MAX_USERS_NUMBER
 
 #define MAX_SERVERS_NUMBER 3 // supposed to be 15, cant be due to OSX constraints
 #define MAX_USERS_NUMBER 20
@@ -26,6 +43,13 @@
 #define SHM_SERVER_IDS_KEY 15
 #define SHM_USER_SERVER_KEY 20
 #define SHM_ROOM_SERVER_KEY 25
+
+#define TIMEOUT 5
+
+#define TRUE 1
+#define FALSE 0
+
+#define _size(X) (sizeof(X)-sizeof(long))
 
 // tie-up of user and server its on
 typedef struct {
