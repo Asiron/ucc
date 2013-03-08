@@ -23,6 +23,7 @@ int SERVER_CONNECTION;
 int CLIENT_QUEUE;
 
 char USERNAME[USER_NAME_MAX_LENGTH];
+char CHANNEL[ROOM_NAME_MAX_LENGTH];
 
 void init_client();
 void init_client_resources();
@@ -45,9 +46,8 @@ void perform_logout();
 void display_help();
 void perform_room_action(int action_type, const char* roomname);
 
-void send_private_message(const char* receiver, const char* content);
+void send_message(const char* receiver, const char* content, int msg_type);
 
-void display_room_list();
-void display_user_list();
+void display_list(int request_type);
 
 #endif

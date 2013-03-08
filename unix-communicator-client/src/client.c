@@ -24,6 +24,8 @@ void init_client(){
     init_client_resources();
     CLIENT_QUEUE = msgget(IPC_PRIVATE, 0666);
     
+    strcpy(CHANNEL, "");
+    
     signal(SIGINT, clean_exit);
 }
 
@@ -58,7 +60,7 @@ int main(int argc, char *argv[])
 void listener_loop(void* param){
     void* received = malloc(2048);
     while(!EXIT_FLAG){
-       //receive_msg(received, _size(MSG_RESPONSE), RESPONSE, &handle_response);
+        receive_msg(received, _size(MSG_RESPONSE), RESPONSE, &handle_response);
         receive_msg(received, _size(MSG_CHAT_MESSAGE), MESSAGE, &handle_message);
         receive_msg(received, _size(MSG_USERS_LIST), USERS_LIST_TYPE, &handle_users_list);
         receive_msg(received, _size(MSG_USERS_LIST), ROOMS_LIST_TYPE, &handle_rooms_list);
@@ -69,37 +71,45 @@ void listener_loop(void* param){
 
 void handle_response(void* received, int msg_type){
     MSG_RESPONSE response = *(MSG_RESPONSE*)received;
+    char buffer[100];
     switch (response.response_type) {
         case MSG_SEND:{
             //we dont do anything
             break;
         }
         case MSG_NOT_SEND:{
-            write(1, response.content, strlen(response.content));
+            sprintf(buffer, "%s%s", KRED, response.content);
+            write(1, buffer, strlen(buffer));
             break;
         }
         case ENTERED_ROOM_SUCCESS:{
-            write(1, response.content, strlen(response.content));
+            sprintf(buffer, "%s%s", KGRN, response.content);
+            write(1, buffer, strlen(buffer));
             break;
         }
         case ENTERED_ROOM_FAILED:{
-            write(1, response.content, strlen(response.content));
+            sprintf(buffer, "%s%s", KRED, response.content);
+            write(1, buffer, strlen(buffer));
             break;
         }
         case LEAVE_ROOM_SUCCESS:{
-            write(1, response.content, strlen(response.content));
+            sprintf(buffer, "%s%s", KGRN, response.content);
+            write(1, buffer, strlen(buffer));
             break;
         }
         case LEAVE_ROOM_FAILED:{
-            write(1, response.content, strlen(response.content));
+            sprintf(buffer, "%s%s", KRED, response.content);
+            write(1, buffer, strlen(buffer));
             break;
         }
         case CHANGE_ROOM_SUCCESS:{
-            write(1, response.content, strlen(response.content));
+            sprintf(buffer, "%s%s", KGRN, response.content);
+            write(1, buffer, strlen(buffer));
             break;
         }
         case CHANGE_ROOM_FAILED:{
-            write(1, response.content, strlen(response.content));
+            sprintf(buffer, "%s%s", KRED, response.content);
+            write(1, buffer, strlen(buffer));
             break;
         } 
         case PING:{
@@ -116,34 +126,38 @@ void handle_message(void* received, int msg_type){
     MSG_CHAT_MESSAGE message = *(MSG_CHAT_MESSAGE*)received;
     if (message.msg_type == PUBLIC) {
         char buffer[MAX_MSG_LENGTH+50];
-        sprintf(buffer, "%s[W][%s][%s]: %s",KMAG, message.send_time, message.sender, message.message);
+        sprintf(buffer, "%s[CH][%s][%s]: %s",KYEL, message.send_time, message.sender, message.message);
         write(1, buffer, strlen(buffer));
     } else if (message.msg_type == PRIVATE) {
         char buffer[MAX_MSG_LENGTH+50];
-        sprintf(buffer, "%s[CH][%s][%s]: %s",KMAG, message.send_time, message.sender, message.message);
+        sprintf(buffer, "%s[W][%s][%s]: %s",KMAG, message.send_time, message.sender, message.message);
         write(1, buffer, strlen(buffer));
     }
 }
 void handle_users_list(void* received, int msg_type){
     MSG_USERS_LIST list = *(MSG_USERS_LIST*)received;
     int i;
-    char buffer[15];
-    sprintf(buffer, "%sUser list\n", KGRN);
+    char buffer[50];
+    sprintf(buffer, "%sUser list: \n", KGRN);
     write(1, buffer, strlen(buffer));
-    for (i=0; i<REPO_SIZE && list.users[i]; ++i) {
-        sprintf(buffer, "%s\n", list.users[i]);
-        write(1, buffer, strlen(buffer));
+    for (i=0; i<REPO_SIZE; ++i) {
+        if (list.users[i][0] != '\0') {
+            sprintf(buffer, "<%s>\n", list.users[i]);
+            write(1, buffer, strlen(buffer));
+        }
     }
 }
 void handle_rooms_list(void* received, int msg_type){
     MSG_USERS_LIST rooms_list = *(MSG_USERS_LIST*)received;
     int i;
-    char buffer[15];
-    sprintf(buffer, "%sRooms list\n", KGRN);
+    char buffer[50];
+    sprintf(buffer, "%sRooms list: \n", KGRN);
     write(1, buffer, strlen(buffer));
-    for (i=0; i<REPO_SIZE && rooms_list.users[i]; ++i) {
-        sprintf(buffer, "%s\n", rooms_list.users[i]);
-        write(1, buffer, strlen(buffer));
+    for (i=0; i<REPO_SIZE; ++i) {
+        if (rooms_list.users[i][0] != '\0') {
+            sprintf(buffer, "<%s>\n", rooms_list.users[i]);
+            write(1, buffer, strlen(buffer));
+        }
     }
 }
 
@@ -258,7 +272,7 @@ void parseline(char* line){
         receiver[USER_NAME_MAX_LENGTH-1] = '\0';
         message[MAX_MSG_LENGTH-1] = '\0';
 
-        send_private_message(receiver, message);
+        send_message(receiver, message, PRIVATE);
         free(receiver);
         free(message);
        
@@ -268,18 +282,18 @@ void parseline(char* line){
         
     } else if ( cmp(line, "/rooms", 6) ) {
        
-        display_room_list();
+        display_list(ROOMS_LIST);
         
     } else if ( cmp(line, "/users", 6) ) {
        
-        display_user_list();
+        display_list(USERS_LIST);
        
     } else if ( cmp(line, "/signout", 8)) {
         
         perform_logout();
     } else {
         
-        //send message
+        send_message(CHANNEL, line, PUBLIC);
     }
 }
 
@@ -310,13 +324,15 @@ void perform_room_action(int action_type, const char* roomname){
     strcpy(room_request.room_name, roomname);
     strcpy(room_request.user_name, USERNAME);
     
+    strcpy(CHANNEL, roomname);
+    
     msgsnd(SERVER_CONNECTION, &room_request, _size(MSG_ROOM), 0);
 }
 
-void send_private_message(const char* receiver, const char* content){
+void send_message(const char* receiver, const char* content, int msg_type){
     MSG_CHAT_MESSAGE message;
     message.type = MESSAGE;
-    message.msg_type = PRIVATE;
+    message.msg_type = msg_type;
     strcpy(message.receiver, receiver);
     strcpy(message.sender, USERNAME);
     strcpy(message.message, content);
@@ -329,6 +345,11 @@ void send_private_message(const char* receiver, const char* content){
     msgsnd(SERVER_CONNECTION, &message, _size(MSG_CHAT_MESSAGE), 0);
 }
 
-
-void display_room_list();
-void display_user_list();
+void display_list(int request_type){
+    MSG_REQUEST rm_ls_req;
+    rm_ls_req.type = REQUEST;
+    rm_ls_req.request_type = request_type;
+    strcpy(rm_ls_req.user_name, USERNAME);
+    
+    msgsnd(SERVER_CONNECTION, &rm_ls_req, _size(MSG_REQUEST), 0);
+}
