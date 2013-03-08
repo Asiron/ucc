@@ -9,7 +9,8 @@
 #include "protocol.h"
 #include "client.h"
 
-#define cmp(line, text, nr, letter) !(strncmp(line, text, nr) && strncmp(line, letter, 2)) 
+#define cmp(line, text, nr) !strncmp(line, text, nr)
+
 
 void init_client_resources(){
     SHARED_MEM = malloc(2048);
@@ -18,16 +19,17 @@ void init_client_resources(){
 void init_client(){
 
     EXIT_FLAG = FALSE;
+    LOGGED_IN = FALSE;
     
     init_client_resources();
     CLIENT_QUEUE = msgget(IPC_PRIVATE, 0666);
     
-    signal(SIGINT, clean_resources);
+    signal(SIGINT, clean_exit);
 }
 
-void clean_resources(){
-    printf("\nFreeing up resources\n");
-    printf("Quitting\n");
+void clean_exit(){
+    printf("\n%sFreeing up resources\n", KBLU);
+    printf("%sQuitting\n", KBLU);
     msgctl(CLIENT_QUEUE, IPC_RMID, 0);
     free(SHARED_MEM);
     signal(SIGINT, SIG_DFL);
@@ -50,58 +52,136 @@ int main(int argc, char *argv[])
     pthread_join(listener_thread, NULL);
     pthread_join(interface_thread, NULL);
     
-    
-    
     return EXIT_SUCCESS;
 }
 
 void listener_loop(void* param){
     void* received = malloc(2048);
     while(!EXIT_FLAG){
-//        receive_msg(received, _size(MSG_RESPONSE), RESPONSE, &handle_response);
-//        receive_msg(received, _size(MSG_CHAT_MESSAGE), MESSAGE, &handle_message);
-//        receive_msg(received, _size(MSG_USERS_LIST), USERS_LIST_TYPE, &handle_users_list);
-//        receive_msg(received, _size(MSG_USERS_LIST), ROOMS_LIST_TYPE, &handle_rooms_list);
+       //receive_msg(received, _size(MSG_RESPONSE), RESPONSE, &handle_response);
+        receive_msg(received, _size(MSG_CHAT_MESSAGE), MESSAGE, &handle_message);
+        receive_msg(received, _size(MSG_USERS_LIST), USERS_LIST_TYPE, &handle_users_list);
+        receive_msg(received, _size(MSG_USERS_LIST), ROOMS_LIST_TYPE, &handle_rooms_list);
         usleep(100);
     }
     free(received);
 }
 
 void handle_response(void* received, int msg_type){
-
+    MSG_RESPONSE response = *(MSG_RESPONSE*)received;
+    switch (response.response_type) {
+        case MSG_SEND:{
+            //we dont do anything
+            break;
+        }
+        case MSG_NOT_SEND:{
+            write(1, response.content, strlen(response.content));
+            break;
+        }
+        case ENTERED_ROOM_SUCCESS:{
+            write(1, response.content, strlen(response.content));
+            break;
+        }
+        case ENTERED_ROOM_FAILED:{
+            write(1, response.content, strlen(response.content));
+            break;
+        }
+        case LEAVE_ROOM_SUCCESS:{
+            write(1, response.content, strlen(response.content));
+            break;
+        }
+        case LEAVE_ROOM_FAILED:{
+            write(1, response.content, strlen(response.content));
+            break;
+        }
+        case CHANGE_ROOM_SUCCESS:{
+            write(1, response.content, strlen(response.content));
+            break;
+        }
+        case CHANGE_ROOM_FAILED:{
+            write(1, response.content, strlen(response.content));
+            break;
+        } 
+        case PING:{
+            MSG_REQUEST answer;
+            answer.type = REQUEST;
+            answer.request_type = PONG;
+            strcpy(answer.user_name, USERNAME);
+            msgsnd(SERVER_CONNECTION, &answer, _size(MSG_REQUEST), 0);
+            break;
+        }
+    }
 }
 void handle_message(void* received, int msg_type){
-
+    MSG_CHAT_MESSAGE message = *(MSG_CHAT_MESSAGE*)received;
+    if (message.msg_type == PUBLIC) {
+        char buffer[MAX_MSG_LENGTH+50];
+        sprintf(buffer, "%s[W][%s][%s]: %s",KMAG, message.send_time, message.sender, message.message);
+        write(1, buffer, strlen(buffer));
+    } else if (message.msg_type == PRIVATE) {
+        char buffer[MAX_MSG_LENGTH+50];
+        sprintf(buffer, "%s[CH][%s][%s]: %s",KMAG, message.send_time, message.sender, message.message);
+        write(1, buffer, strlen(buffer));
+    }
 }
 void handle_users_list(void* received, int msg_type){
-
+    MSG_USERS_LIST list = *(MSG_USERS_LIST*)received;
+    int i;
+    char buffer[15];
+    sprintf(buffer, "%sUser list\n", KGRN);
+    write(1, buffer, strlen(buffer));
+    for (i=0; i<REPO_SIZE && list.users[i]; ++i) {
+        sprintf(buffer, "%s\n", list.users[i]);
+        write(1, buffer, strlen(buffer));
+    }
 }
 void handle_rooms_list(void* received, int msg_type){
-
+    MSG_USERS_LIST rooms_list = *(MSG_USERS_LIST*)received;
+    int i;
+    char buffer[15];
+    sprintf(buffer, "%sRooms list\n", KGRN);
+    write(1, buffer, strlen(buffer));
+    for (i=0; i<REPO_SIZE && rooms_list.users[i]; ++i) {
+        sprintf(buffer, "%s\n", rooms_list.users[i]);
+        write(1, buffer, strlen(buffer));
+    }
 }
 
 void interface_loop(void* param){
-    printf("Connecting to server\n");
-    do {
-        printf("Enter valid server number\n");
-        scanf("%d", &SERVER_CONNECTION);
-    } while (perform_login() != SUCCESS );
+    
+    printf("%sWelcome\n", KBLU);
     
     size_t restrict_size = 512;
     char* line = calloc(restrict_size, sizeof(char));
-    while(1){
+
+    while (!EXIT_FLAG){
+        if(!LOGGED_IN){
+            printf("%sConnecting to server\n", KBLU);
+            do {
+                if(EXIT_FLAG)
+                    break;
+                printf("%sEnter valid server number\n%s", KYEL, KMAG);
+                scanf("%d", &SERVER_CONNECTION);
+
+            } while (perform_login() != SUCCESS);
+        } else {
+            printf("%s", KWHT);
             getline(&line, &restrict_size, stdin);
-            if(EXIT_FLAG)
-                break;
-            else
+            if(!EXIT_FLAG)
                 parseline(line);
+        }
     }
     free(line);
 }
 
 int perform_login(){
-    printf("Enter username\n");
+    
+    printf("%sEnter username\n%s", KYEL, KMAG);
     scanf("%s", USERNAME);
+    USERNAME[9] = '\0';
+
+    if(EXIT_FLAG)
+        return FAIL;
     
     int return_flag = FAIL;
     
@@ -117,14 +197,17 @@ int perform_login(){
     while( 1 ) {
         if ( msgrcv(CLIENT_QUEUE, received, _size(MSG_RESPONSE), RESPONSE, IPC_NOWAIT) != -1 ){
             MSG_RESPONSE temp = *(MSG_RESPONSE*)received;
-            if ( temp.response_type == LOGIN_SUCCESS )
+            if ( temp.response_type == LOGIN_SUCCESS ) {
                 return_flag = SUCCESS;
-            else if ( temp.response_type == LOGIN_FAILED )
+                LOGGED_IN = TRUE;
+                printf("\n%s%s\n", KGRN, (*(MSG_RESPONSE*)received).content);
+            } else if ( temp.response_type == LOGIN_FAILED ){
                 return_flag = FAIL;
-            printf("%s\n", (*(MSG_RESPONSE*)received).content);
+                printf("\n%s%s\n", KRED, (*(MSG_RESPONSE*)received).content);
+            }
             break;
         } else if ( time(0) - time_diff > TIMEOUT ) {
-            printf("Timeout, server didnt respond\n");
+            printf("%s\nTimeout, server didnt respond\n", KRED);
             return_flag = FAIL;
             break;
         }
@@ -133,40 +216,119 @@ int perform_login(){
     return return_flag;
 }
 
-void receive_msg(void* received, size_t msg_size, int  msg_type, fnc_handler handler) {
+
+
+void receive_msg(void* received, int msg_size, int msg_type, fnc_handler handler) {
     if ( msgrcv(CLIENT_QUEUE, received, msg_size, msg_type, IPC_NOWAIT) != -1 ) {
         handler(received, msg_type);
     }
 }
 
 void parseline(char* line){
-    if ( cmp(line, "/quit", 5, "/q") ) {
+    if ( cmp(line, "/quit", 5) ) {
+        perform_logout();
+        clean_exit();
+        exit(EXIT_SUCCESS);
+        
+    } else if ( cmp(line, "/join ", 6) ) {
        
-       printf("quitting\n");
+        char* roomname = (char*)malloc(ROOM_NAME_MAX_LENGTH*sizeof(char));
+        roomname = strndup(line+6, strlen(line)-7);
+        perform_room_action(ENTER_ROOM, roomname);
+        free(roomname);
        
-    } else if ( cmp(line, "/join ", 6, "/j") ) {
+    } else if ( cmp(line, "/change ", 8) ) {
+        
+        char* roomname = (char*)malloc(ROOM_NAME_MAX_LENGTH*sizeof(char));
+        roomname = strndup(line+8, strlen(line)-9);
+        perform_room_action(CHANGE_ROOM, roomname);
+        free(roomname);
+        
+    } else if ( cmp(line, "/leave", 6) ) {
        
-       printf("joining channel %s \n", line);
+        perform_room_action(LEAVE_ROOM, "");
        
-    } else if ( cmp(line, "/leave", 5, "/l") ) {
+    } else if ( cmp(line, "/msg ", 5) ) {
+        
+        char* name_pos = strchr(line, ' ');
+        char* message_pos = strchr(name_pos+1, ' ');
+        char* receiver = strndup(name_pos+1, strlen(name_pos)-strlen(message_pos)-1);
+        char* message = strndup(message_pos+1, strlen(message_pos)-2);
+        
+        receiver[USER_NAME_MAX_LENGTH-1] = '\0';
+        message[MAX_MSG_LENGTH-1] = '\0';
+
+        send_private_message(receiver, message);
+        free(receiver);
+        free(message);
        
-       printf("leaving channel\n");
+    } else if ( cmp(line, "/help", 5) ) {
+        
+        display_help();
+        
+    } else if ( cmp(line, "/rooms", 6) ) {
        
-    } else if ( cmp(line, "/msg ", 5, "/w") ) {
+        display_room_list();
+        
+    } else if ( cmp(line, "/users", 6) ) {
        
-       printf("messaging %s\n", line);
+        display_user_list();
        
-    } else if ( cmp(line, "/help", 5, "/h") ) {
-       
-       printf("showing help\n");
-       
-    } else if ( cmp(line, "/rooms", 6, "/r") ) {
-       
-       printf("showing rooms\n");
-       
-    } else if ( cmp(line, "/users", 6, "/u") ) {
-       
-       printf("showing users\n");
-       
+    } else if ( cmp(line, "/signout", 8)) {
+        
+        perform_logout();
+    } else {
+        
+        //send message
     }
 }
+
+void perform_logout(){
+    MSG_LOGIN login;
+    login.type = LOGOUT;
+    login.ipc_num = CLIENT_QUEUE;
+    strcpy(login.username, USERNAME);
+    msgsnd(SERVER_CONNECTION, &login, _size(MSG_LOGIN), 0);
+    LOGGED_IN = FALSE;
+}
+
+void display_help(){
+    printf("%sUse one of the following commands\n", KCYN);
+    printf("%s/join <channel_name> or /j <channel_name> \t\t\tJoins specified channel\n", KCYN);
+    printf("%s/leave or /l \t\t\t\t\t\t\tLeaves current channel \n", KCYN);
+    printf("%s/msg <username> <message> or /w <username> <message> \t\tSends private message\n", KCYN);
+    printf("%s/rooms or /r \t\t\t\t\t\t\tDisplays list of available rooms\n", KCYN);
+    printf("%s/users or /u \t\t\t\t\t\t\tDisplays list of all users\n", KCYN);
+    printf("%s/signout or /s \t\t\t\t\t\t\tSigns out\n", KCYN);
+}
+
+void perform_room_action(int action_type, const char* roomname){
+    MSG_ROOM room_request;
+    
+    room_request.type = ROOM;
+    room_request.operation_type = action_type;
+    strcpy(room_request.room_name, roomname);
+    strcpy(room_request.user_name, USERNAME);
+    
+    msgsnd(SERVER_CONNECTION, &room_request, _size(MSG_ROOM), 0);
+}
+
+void send_private_message(const char* receiver, const char* content){
+    MSG_CHAT_MESSAGE message;
+    message.type = MESSAGE;
+    message.msg_type = PRIVATE;
+    strcpy(message.receiver, receiver);
+    strcpy(message.sender, USERNAME);
+    strcpy(message.message, content);
+    
+    time_t curtime;
+    time(&curtime);
+    strncpy(message.send_time, ctime(&curtime)+11, 5);
+    message.send_time[5] = '\0';
+    
+    msgsnd(SERVER_CONNECTION, &message, _size(MSG_CHAT_MESSAGE), 0);
+}
+
+
+void display_room_list();
+void display_user_list();
