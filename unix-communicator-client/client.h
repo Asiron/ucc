@@ -13,8 +13,6 @@ typedef void (*fnc_handler)(void*, int);
 
 enum EXIT_CODES {SUCCESS, FAIL};
 
-void* SHARED_MEM;
-
 int EXIT_FLAG;
 int LOGGED_IN;
 
@@ -26,7 +24,6 @@ char USERNAME[USER_NAME_MAX_LENGTH];
 char CHANNEL[ROOM_NAME_MAX_LENGTH];
 
 void init_client();
-void init_client_resources();
 void clean_exit();
 
 void parseline(char* line);

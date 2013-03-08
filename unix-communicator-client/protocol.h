@@ -44,7 +44,7 @@
 #define SHM_USER_SERVER_KEY 20
 #define SHM_ROOM_SERVER_KEY 25
 
-#define TIMEOUT 5
+#define TIMEOUT 1
 
 #define TRUE 1
 #define FALSE 0

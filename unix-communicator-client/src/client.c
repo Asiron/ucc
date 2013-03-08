@@ -12,16 +12,13 @@
 #define cmp(line, text, nr) !strncmp(line, text, nr)
 
 
-void init_client_resources(){
-    SHARED_MEM = malloc(2048);
-}
+
 
 void init_client(){
 
     EXIT_FLAG = FALSE;
     LOGGED_IN = FALSE;
     
-    init_client_resources();
     CLIENT_QUEUE = msgget(IPC_PRIVATE, 0666);
     
     strcpy(CHANNEL, "");
@@ -33,7 +30,6 @@ void clean_exit(){
     printf("\n%sFreeing up resources\n", KBLU);
     printf("%sQuitting\n", KBLU);
     msgctl(CLIENT_QUEUE, IPC_RMID, 0);
-    free(SHARED_MEM);
     signal(SIGINT, SIG_DFL);
     EXIT_FLAG = TRUE;
 }
@@ -73,12 +69,20 @@ void handle_response(void* received, int msg_type){
     MSG_RESPONSE response = *(MSG_RESPONSE*)received;
     char buffer[100];
     switch (response.response_type) {
+        case PING:{
+            MSG_REQUEST answer;
+            answer.type = REQUEST;
+            answer.request_type = PONG;
+            strcpy(answer.user_name, USERNAME);
+            msgsnd(SERVER_CONNECTION, &answer, _size(MSG_REQUEST), 0);
+            break;
+        }
         case MSG_SEND:{
             //we dont do anything
             break;
         }
         case MSG_NOT_SEND:{
-            sprintf(buffer, "%s%s", KRED, response.content);
+            sprintf(buffer, "\n%s%s", KRED, response.content);
             write(1, buffer, strlen(buffer));
             break;
         }
@@ -112,25 +116,17 @@ void handle_response(void* received, int msg_type){
             write(1, buffer, strlen(buffer));
             break;
         } 
-        case PING:{
-            MSG_REQUEST answer;
-            answer.type = REQUEST;
-            answer.request_type = PONG;
-            strcpy(answer.user_name, USERNAME);
-            msgsnd(SERVER_CONNECTION, &answer, _size(MSG_REQUEST), 0);
-            break;
-        }
     }
 }
 void handle_message(void* received, int msg_type){
     MSG_CHAT_MESSAGE message = *(MSG_CHAT_MESSAGE*)received;
     if (message.msg_type == PUBLIC) {
         char buffer[MAX_MSG_LENGTH+50];
-        sprintf(buffer, "%s[CH][%s][%s]: %s",KYEL, message.send_time, message.sender, message.message);
+        sprintf(buffer, "\n%s[CH][%s][%s]: %s",KYEL, message.send_time, message.sender, message.message);
         write(1, buffer, strlen(buffer));
     } else if (message.msg_type == PRIVATE) {
         char buffer[MAX_MSG_LENGTH+50];
-        sprintf(buffer, "%s[W][%s][%s]: %s",KMAG, message.send_time, message.sender, message.message);
+        sprintf(buffer, "\n%s[W][%s][%s]: %s",KMAG, message.send_time, message.sender, message.message);
         write(1, buffer, strlen(buffer));
     }
 }
@@ -291,9 +287,12 @@ void parseline(char* line){
     } else if ( cmp(line, "/signout", 8)) {
         
         perform_logout();
-    } else {
+    } else if ( cmp(line, "/all ", 4)){
         
-        send_message(CHANNEL, line, PUBLIC);
+        char* msg = strchr(line, ' ');
+        char* message = strndup(msg+1, strlen(line)-6);
+        send_message(CHANNEL, message, PUBLIC);
+        free(message);
     }
 }
 
@@ -308,12 +307,14 @@ void perform_logout(){
 
 void display_help(){
     printf("%sUse one of the following commands\n", KCYN);
-    printf("%s/join <channel_name> or /j <channel_name> \t\t\tJoins specified channel\n", KCYN);
-    printf("%s/leave or /l \t\t\t\t\t\t\tLeaves current channel \n", KCYN);
-    printf("%s/msg <username> <message> or /w <username> <message> \t\tSends private message\n", KCYN);
-    printf("%s/rooms or /r \t\t\t\t\t\t\tDisplays list of available rooms\n", KCYN);
-    printf("%s/users or /u \t\t\t\t\t\t\tDisplays list of all users\n", KCYN);
-    printf("%s/signout or /s \t\t\t\t\t\t\tSigns out\n", KCYN);
+    printf("%s/join <channel_name> \t\tJoins specified channel\n", KCYN);
+    printf("%s/leave \t\t\t\tLeaves current channel \n", KCYN);
+    printf("%s/msg <username> <message> \tSends private message\n", KCYN);
+    printf("%s/rooms \t\t\t\tDisplays list of available rooms\n", KCYN);
+    printf("%s/users \t\t\t\tDisplays list of all users\n", KCYN);
+    printf("%s/signout \t\t\tSigns out\n", KCYN);
+    printf("%s/all <message> \t\t\tSends public message\n", KCYN);
+
 }
 
 void perform_room_action(int action_type, const char* roomname){
